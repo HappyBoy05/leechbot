@@ -11,10 +11,23 @@ from logging.handlers import RotatingFileHandler
 from sys import exit
 import urllib.request
 import dotenv
+import subprocess
+import requests
 
 if os.path.exists("TorrentLeech-Gdrive.txt"):
     with open("Torrentleech-Gdrive.txt", "r+") as f_d:
         f_d.truncate(0)
+
+CONFIG_FILE_URL = os.environ.get('CONFIG_FILE_URL', None)
+if CONFIG_FILE_URL is not None:
+    res = requests.get(CONFIG_FILE_URL)
+    if res.status_code == 200:
+        with open('config.env', 'wb+') as f:
+            f.write(res.content)
+            f.close()
+    else:
+        logging.error(res.status_code)
+
 
 # the logging things
 logging.basicConfig(
@@ -85,8 +98,8 @@ MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START = int(
 )
 MAX_TG_SPLIT_FILE_SIZE = int(os.environ.get("MAX_TG_SPLIT_FILE_SIZE", "1072864000"))
 # add config vars for the display progress
-FINISHED_PROGRESS_STR = os.environ.get("FINISHED_PROGRESS_STR", "🟢")
-UN_FINISHED_PROGRESS_STR = os.environ.get("UN_FINISHED_PROGRESS_STR", "🔴")
+FINISHED_PROGRESS_STR = os.environ.get("FINISHED_PROGRESS_STR", "█")
+UN_FINISHED_PROGRESS_STR = os.environ.get("UN_FINISHED_PROGRESS_STR", "░")
 # add offensive API
 TG_OFFENSIVE_API = os.environ.get("TG_OFFENSIVE_API", None)
 CUSTOM_FILE_NAME = os.environ.get("CUSTOM_FILE_NAME", "")
@@ -157,4 +170,4 @@ def multi_rclone_init():
 
 multi_rclone_init()
 
-logging.info("📶 BOT STARTED")
+logging.info("📶 Bot Started")
