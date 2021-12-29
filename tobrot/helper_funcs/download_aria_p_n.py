@@ -41,10 +41,7 @@ sys.setrecursionlimit(10 ** 4)
 
 
 
-async
-
-
-def add_magnet(aria_instance, magnetic_link, c_file_name):
+async def add_magnet(aria_instance, magnetic_link, c_file_name):
     options = None
     # if c_file_name is not None:
     #     options = {
